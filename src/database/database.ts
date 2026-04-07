@@ -48,7 +48,8 @@ export async function initializeDatabase(): Promise<void> {
 
 async function seedDatabase(database: SQLiteDatabase): Promise<void> {
   const existing = await database.getFirstAsync<{ count: number }>(
-    'SELECT COUNT(*) as count FROM controls'
+    'SELECT COUNT(*) as count FROM controls WHERE framework = ?',
+    [NIST_CONTROLS[0]?.framework ?? '']
   );
 
   if (existing && existing.count > 0) return;
